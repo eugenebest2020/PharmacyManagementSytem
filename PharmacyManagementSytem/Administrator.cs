@@ -33,7 +33,14 @@ namespace PharmacyManagementSytem
         private void Administrator_Load(object sender, EventArgs e)
         {
             uC_Dashboard1.Visible=false;
+            uC_AddUsers1.Visible = false;
             btnDashBoard.PerformClick();
+        }
+
+        private void btn_AddUser_Click(object sender, EventArgs e)
+        {
+            uC_AddUsers1.Visible = true;
+            uC_AddUsers1.BringToFront();
         }
     }
 }
