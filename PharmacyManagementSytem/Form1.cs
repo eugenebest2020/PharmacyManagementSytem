@@ -12,6 +12,10 @@ namespace PharmacyManagementSytem
 {
     public partial class Form1 : Form
     {
+        function fn = new function();
+
+        string query;
+        DataSet ds;
         public Form1()
         {
             InitializeComponent();
@@ -30,16 +34,43 @@ namespace PharmacyManagementSytem
 
         private void btnSignIn_Click(object sender, EventArgs e)
         {
-            if(txtUserName.Text == "programmer" && txtPassword.Text == "p@ssword")
+            query = "select * from users";
+
+             ds = fn.getData(query);
+
+            if (ds.Tables[0].Rows.Count == 0)
             {
-                Administrator adm = new Administrator();
-                adm.Show();
-                this.Hide();
+                if(txtUserName.Text=="root" && txtPassword.Text == "root")
+                {
+                    Administrator admin = new Administrator();
+
+                    admin.Show();
+                    this.Hide();
+                }
             }
             else
             {
-                MessageBox.Show("Wrong Username Or Password","Error"
-                    ,MessageBoxButtons.OK, MessageBoxIcon.Error);   
+                query = "select * from users where username ='" + txtUserName.Text +
+                    "'and pass='" + txtPassword.Text + "'";
+                ds = fn.getData(query);
+                if (ds.Tables[0].Rows.Count != 0)
+                {
+                    string role = ds.Tables[0].Rows[0][1].ToString();
+
+                    if(role == "Administrator")
+                    {
+                        Administrator admin = new Administrator();
+                        admin.Show();
+                        this.Hide();
+                    }
+
+                    else if(role =="Pharmacist")
+                    {
+                        Pharmacist pharm = new Pharmacist();
+                        pharm.Show();
+                        this.Hide();
+                    }
+                }
             }
         }
     }
